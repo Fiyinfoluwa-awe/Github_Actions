@@ -35,11 +35,21 @@ jobs:
 
     # Sets up the specified version  of Node.js
     - name: Use Node.js ${{matrix.node-version}}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{matrix.node-version}}
 
-    # Installs node modules as specified in the project's package-lock.json
+
+    - name: Cache Node.js modules
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+         ${{ runner.os }}-node-${{ matrix.node-version }}-
+
+
+   # Installs node modules as specified in the project's package-lock.json
     - run: npm ci
 
     # This command will only run if a build script is defined in the package.json
