@@ -57,3 +57,4 @@ jobs:
 
     # Runs tests as defined in the project's package.json 
     - run: npm test
+
